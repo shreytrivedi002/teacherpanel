@@ -1,0 +1,59 @@
+{% extends 'cbase.html' %} {% block ad %} {% load static %}{% csrf_token %}
+
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-7 mt-5">
+
+
+
+        <h2 class="section-title mb-3 mt-5">Update New Material</h2>
+        <p class="mb-5">Try Reading the <a href="#">Help Report</a> to get to know the method for uploading files.</p>
+        <a style="color: black;"><b>Qunic Id: </b></a>
+        <form method="post" data-aos="fade" action="{% url 'pdfs' %}" autocomplete="off">{% csrf_token %}
+            <label>
+                <select name="uid" style="width: 50%;" >
+                    
+                    <option value="{{ id }}" selected hidden active >{{id}}</option>
+                </select>
+            </label>
+            <div class="form-group row">
+                <div class="col-md-6 mb-3 mb-lg-0">
+                    <input type="text" class="form-control" placeholder="Title of Document" name="titl" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" placeholder="Subject" name="subject" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <textarea class="form-control" id="" cols="30" rows="5" placeholder="Write your description/message here.(This is optional)" name="desc"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <select class="form-control" name="uname" required style="width: max-content; height: 2em;">
+                        <option selected hidden disabled>Select your Name Here</option>
+                        {% for a in data %}
+                        <option value="{{ a.name }}" > {{ a.name }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <input type="submit" class="btn btn-primary py-3 px-5 btn-block btn-pill" value="Next">
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+    {% endblock %}

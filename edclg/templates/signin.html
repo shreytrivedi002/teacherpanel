@@ -1,0 +1,54 @@
+ {% extends 'cbase.html' %} {% block ad %} {% load static %}
+
+
+
+<style>
+    #fres {
+        margin-top: 4%;
+    }
+    
+    #loro {
+        background-color: rgba(255, 0, 0, 0.514);
+        color: white;
+    }
+</style>
+<section>
+    <span>
+        <h3 id="loro" >
+            {{ invalid }}
+        </h3>
+    </span>
+</section>
+<section class="login py-5 border-top-1">
+    <div class="container" id="fres">
+        <div class="row justify-content-center" style="background-image: url({% static 'bkg.jpg' %});">
+            <div class="col-lg-5 col-md-8 align-item-center" id="fres" style="margin-bottom: 4%;">
+                <div class="border" style="background-color: rgba(255, 255, 255, 0.459)">
+                    <h3 class="bg-gray p-4">Login Now</h3>
+                    <form action="{% url 'signin' %}" method="POST">{% csrf_token %}
+                        <fieldset class="p-4">
+                            <input type="email" name="email" placeholder="email" class="border p-3 w-100 my-2">
+                            <input type="password" name="password" placeholder="Password" class="border p-3 w-100 my-2">
+                            <!-- <div class="loggedin-forgot">
+                                <input type="checkbox" id="keep-me-logged-in">
+                                <label for="keep-me-logged-in" class="pt-3 pb-2">Keep me logged in</label>
+                            </div> -->
+                            <button type="submit" class="d-block py-3 px-5 bg-primary text-white border-0 rounded font-weight-bold mt-3">Log in</button>
+                            <!-- <a class="mt-3 d-block  text-primary" href="#">Forget Password?</a> -->
+                            <div style="background-color: rgba(255, 255, 255, 0.514); margin-top: 2%;">
+                                <p style="color: black;"><b>Be Sure to Remember the Password You Enter.</b></p>
+                                <a class="mt-3 d-inline-block text-primary" href="{% url 'clghome' %}">Register Now</a>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+{% endblock %}
