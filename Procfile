@@ -1,1 +1,1 @@
-web: gunicorn teacher.wsgi
+web: gunicorn edusite.wsgi
