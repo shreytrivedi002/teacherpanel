@@ -1,6 +1,6 @@
 from django.shortcuts import render , redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required 
 # from user.forms import UserRegisterForm ,contactform , reqform
 from django.views.decorators.csrf import csrf_protect
 from django.core.mail import send_mail
@@ -10,6 +10,8 @@ from django.contrib.auth import authenticate, login ,logout
 from .forms import pdfupform
 import random
 import string
+
+
 
 
 def createuser(request):
@@ -53,12 +55,25 @@ def rand():
 
 
 def clghome(request):
-    return render(request,'clghome.html')
+    qid = Courseupdate.objects.only('unqid')
+    last_ten = Courseupdate.objects.order_by('-id')[:10][::-1]
+    context ={
+        # 'display':Courseupdate.objects.all()
+        # 'docdisplay'
+        'display' : last_ten
+    }
+    return render(request,'clghome.html',context)
 
 
 
 def profile(request):
     return render(request,'profile.html')
+
+
+
+
+
+
 
 
 
@@ -94,9 +109,10 @@ def pdf(request):
         nam = request.POST['titl']
         sub = request.POST['subject']
         # a = request.POST['url']
-        uname = request.POST['uname']
+        uname = request.POST['email']
         disc = request.POST['desc']
-        obj = Courseupdate(unqid=unid,title=nam,subject=sub,desc=disc,name=uname)
+        obj = Courseupdate(unqid=unid,title=nam,subject=sub,desc=disc,email=uname)
+
         if obj :
             obj.save()
             form = pdfupform()
@@ -116,10 +132,14 @@ def pdf(request):
     
 
 def updone(request):
+    g = request.POST['uid']
+    geto = Courseupdate.objects.get(unqid=g)
     if request.method == 'POST':
         form = pdfupform(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            instance = form.save(commit=False)
+            instance.unid = geto.unqid
+            instance.save()
             context={
                 'success':"HURRAY!!! You Uploaded a new Material For your Students" 
             }
