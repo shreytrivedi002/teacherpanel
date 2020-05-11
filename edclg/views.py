@@ -1,10 +1,10 @@
 from django.shortcuts import render , redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required 
+from django.contrib.auth.decorators import login_required
 # from user.forms import UserRegisterForm ,contactform , reqform
 from django.views.decorators.csrf import csrf_protect
 from django.core.mail import send_mail
-from .models import Teachers ,Courseupdate
+from .models import Teachers ,Courseupdate,pdfstore
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login ,logout
 from .forms import pdfupform
@@ -25,7 +25,7 @@ def createuser(request):
             context = {
                 'ualtaken':"Email You are Trying to Enter is Already Taken !!!"
             }
-            return render(request,'clghome.html',context) 
+            return render(request,'clghome.html',context)
         except User.DoesNotExist:
             if passp == passq:
                 user = User.objects.create_user(username=email,password=passp)
@@ -35,17 +35,17 @@ def createuser(request):
                 context={
                 'nomatch':"passowrds do not match!!!"
                 }
-                return render(request,'clghome.html',context) 
-               
+                return render(request,'clghome.html',context)
 
 
 
 
-        
-        
 
-    
-    
+
+
+
+
+
 def rand():
     letters = string.ascii_letters
     kub = ( ''.join(random.choice(letters) for i in range(45)) )
@@ -56,7 +56,7 @@ def rand():
 
 def clghome(request):
     qid = Courseupdate.objects.only('unqid')
-    last_ten = Courseupdate.objects.order_by('-id')[:10][::-1]
+    last_ten = pdfstore.objects.order_by('-id')[:10][::-1]#changed from course update to pdfstore
     context ={
         # 'display':Courseupdate.objects.all()
         # 'docdisplay'
@@ -80,12 +80,12 @@ def profile(request):
 @login_required
 def up(request):
     global rock
-    rock = rand() 
+    rock = rand()
     gshock = rock
     if gshock==rock:
         global mrock
         mrock=rock
-        
+
 
     context = {
         'id':rock,
@@ -118,7 +118,7 @@ def pdf(request):
             form = pdfupform()
             context ={
                 'form':form,
-                'id':mrock,
+                'id':unid,#changed from mrock to unid
                 'name':uname
             }
             return render(request, 'pdf.html',context)
@@ -127,9 +127,9 @@ def pdf(request):
         return render(request, 'upload.html', {
             'form': form
         })
-        
 
-    
+
+
 
 def updone(request):
     g = request.POST['uid']
@@ -138,10 +138,10 @@ def updone(request):
         form = pdfupform(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.unid = geto.unqid
+            instance.unid = geto#changes here
             instance.save()
             context={
-                'success':"HURRAY!!! You Uploaded a new Material For your Students" 
+                'success':"HURRAY!!! You Uploaded a new Material For your Students"
             }
             return render(request,'dashboard.html',context)
     else:
@@ -168,14 +168,14 @@ def signin(request):
             'invalid':"Unable to Log you In!!! Invalid your Credentials..."
         }
         return render(request,'signin.html',context)
-            
+
     else:
         context={
             # 'invalid':"Unable to Log you In!!! Check your Credentials..."
         }
         return render(request,'signin.html',context)
 
-    
+
 
 
 def signout(request):

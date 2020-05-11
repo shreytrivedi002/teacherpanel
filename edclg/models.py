@@ -29,7 +29,7 @@ class pdfstore(models.Model):
     unqid = models.TextField(max_length=50)
     file = models.FileField(upload_to='media')
     date = models.DateTimeField(auto_now_add=True)
-    unid = models.ForeignKey(Courseupdate,on_delete=models.CASCADE, default=1)
+    unid = models.ForeignKey(Courseupdate,on_delete=models.CASCADE)
     def __str__(self):
         return self.teacheremail +"     |     " + self.unqid
 
