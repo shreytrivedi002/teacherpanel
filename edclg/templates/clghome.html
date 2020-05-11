@@ -117,6 +117,28 @@
                     </span>
                 </div>
             </section>
+            <div class="slide-1" style="background-image: url('{% static 'images/hero_1.jpg' %} ');" data-stellar-background-ratio="0.5">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 mb-4">
+                                    <h1 data-aos="fade-up" data-aos-delay="100">Learn From The Experts of Your Own Colleges. Course Material That You Never Lose.</h1>
+                                </div>
+
+                                <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="500">
+                                    <div class="form-box">
+                                        <h2>Greetings!
+                                            <h6>{{user.username}}</h6> You are Now the Member of a Society Being Managed and Developed By Students Like You. <br> Happy Learning And Well Wishes. </h2>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             {% else %}
             <div class="slide-1" style="background-image: url('{% static 'images/hero_1.jpg' %} ');" data-stellar-background-ratio="0.5">
                 <div class="container">
@@ -157,28 +179,7 @@
             {% endif %}
             <!-- ------------------------------------------------------------------------------------------------------------------------- -->
             <!-- after login -->
-            <div class="slide-1" style="background-image: url('{% static 'images/hero_1.jpg' %} ');" data-stellar-background-ratio="0.5">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <div class="row align-items-center">
-                                <div class="col-lg-6 mb-4">
-                                    <h1 data-aos="fade-up" data-aos-delay="100">Learn From The Experts of Your Own Colleges. Course Material That You Never Lose.</h1>
-                                </div>
 
-                                <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="500">
-                                    <div class="form-box">
-                                        <h2>Greetings!
-                                            <h6>{{user.username}}</h6> You are Now the Member of a Society Being Managed and Developed By Students Like You. <br> Happy Learning And Well Wishes. </h2>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
 
@@ -199,7 +200,12 @@
                         {% for con in display %}
                         <div class="course mt-5 bg-white h-100 align-self-stretch">
                             <figure class="m-0">
-                                <a href="course-single.html"><img src="{% static 'images/img_1.jpg' %}" alt="Image" class="img-fluid"></a>
+                                <a href="course-single.html">
+                                    <!-- <iframe src="{% static 'con.file' %}" alt="Image" class="img-fluid"></iframe> -->
+                                    <embed src="{{ con.file.url }}" alt="Image" class="img-fluid"></embed>
+
+                                    <!-- <embed src=""> -->
+                                </a>
                             </figure>
                             <div class="course-inner-text py-4 px-4">
                                 <span class="course-price">edf</span>
@@ -207,7 +213,7 @@
                                 <div class="meta"><span class="icon-clock-o"></span></div>
                                 <h3><a href="#">{{ con.unid.subject }}</a></h3>
                                 <p>{{ con.unid.title }} </p>
-                                <p>{{con.file}}</p>
+                                <!-- <p>{{con.file}}</p> -->
                             </div>
                             <div class="d-flex border-top stats">
                                 <div class="py-3 px-4"><span class="icon-users"></span> 203 students</div>
