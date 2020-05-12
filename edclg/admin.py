@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Teachers,Courseupdate,pdfstore
+from .models import Teachers,Courseupdate,pdfstore,comments
  
 
 
@@ -8,3 +8,4 @@ from .models import Teachers,Courseupdate,pdfstore
 admin.site.register(Teachers)
 admin.site.register(Courseupdate)
 admin.site.register(pdfstore)
+admin.site.register(comments)

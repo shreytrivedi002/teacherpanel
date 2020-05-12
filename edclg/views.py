@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 # from user.forms import UserRegisterForm ,contactform , reqform
 from django.views.decorators.csrf import csrf_protect
 from django.core.mail import send_mail
-from .models import Teachers ,Courseupdate,pdfstore
+from .models import Teachers ,Courseupdate,pdfstore,comments
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login ,logout
 from .forms import pdfupform
@@ -187,13 +187,17 @@ def signout(request):
 
 
 def coursesingle(request,unqid,temail):
-    
-
+    comment = comments.objects.filter(unqid=unqid)
+    count = comments.objects.filter(unqid=unqid).count()
     material = pdfstore.objects.filter(unqid=unqid)
     teacher = User.objects.filter(username=temail)
+    file = pdfstore.objects.filter(teacheremail=temail)
     context = {
         'material': material,
         'teacher': teacher,
+        'cmt':comment,
+        'cmtcount':count,
+        'files':file
     }
     return render(request,'course-single.html',context)
 
@@ -202,4 +206,13 @@ def coursesingle(request,unqid,temail):
 
 
 
-
+def commentsave(request):
+    uid = request.GET['uid']
+    name = request.GET['name']
+    email = request.GET['email']
+    subject = request.GET['subject']
+    message = request.GET['message']
+    instance = comments(unqid=uid,name=name,email=email,subject=subject,message=message)
+    if uid != '' and name != '' and email != '' and message !='':
+        instance.save()
+        return redirect('clghome')
