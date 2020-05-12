@@ -213,16 +213,23 @@
                         <figure class="m-0">
                             <a href="coursesingle/{{fil.unqid}}/{{fil.teacheremail}}"><embed src="{{fil.file.url}}" alt="Image" class="img-fluid"><embed></a>
                         </figure>
-                        <div class="course-inner-text py-4 px-4">
-                            <span class="course-price">edf</span>
-                            <div class="meta"><span class="icon-clock-o"></span>{{fil.unid.title}}</div>
-                            <h3><a href="#">{{fil.unid.subject}}</a></h3>
-                            <p>{{fil.unid.desc}} </p>
+                        <div>
+
+                            <div class="course-inner-text py-4 px-4">
+                                <!-- <a href="coursesingle/{{fil.unqid}}/{{fil.teacheremail}}"><span class="course-price">edf</span></a> -->
+                                <span class="course-price">edf</span>
+                                <div class="meta"><span class="icon-clock-o"></span>{{fil.unid.title}}</div>
+                                <h3><a href="#">{{fil.unid.subject}}</a></h3>
+                                <p>{{fil.unid.desc}} </p>
+                            </div>
+                            <div class="d-flex border-top stats">
+                                <div class="py-3 px-4"><span class="icon-users"></span> 2,193 students</div>
+                                <!-- <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div> -->
+                            </div>
+
+
                         </div>
-                        <div class="d-flex border-top stats">
-                            <div class="py-3 px-4"><span class="icon-users"></span> 2,193 students</div>
-                            <!-- <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div> -->
-                        </div>
+
                     </div>
                     {% endfor %}
 

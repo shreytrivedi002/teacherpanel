@@ -166,17 +166,17 @@ MEDIA_URL = '/media/'
 
 
 
-AWS_ACCESS_KEY_ID = 'AKIAZ4TNLRZRRIM7KQ2M'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'u-uploads'
-AWS_S3_REGION_NAME = "ap-south-1"
-AWS_LOCATION = 'static'
+# AWS_ACCESS_KEY_ID = 'AKIAZ4TNLRZRRIM7KQ2M'
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'u-uploads'
+# AWS_S3_REGION_NAME = "ap-south-1"
+# AWS_LOCATION = 'static'
 
 
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 
