@@ -200,7 +200,7 @@
                         {% for con in display %}
                         <div class="course mt-5 bg-white h-100 align-self-stretch">
                             <figure class="m-0">
-                                <a href="course-single.html">
+                                <a href="coursesingle/{{con.unqid}}/{{con.teacheremail}}">
                                     <!-- <iframe src="{% static 'con.file' %}" alt="Image" class="img-fluid"></iframe> -->
                                     <embed src="{{ con.file.url }}" alt="Image" class="img-fluid"></embed>
 

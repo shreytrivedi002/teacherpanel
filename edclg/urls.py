@@ -16,6 +16,7 @@ urlpatterns = [
     path('createuser/', views.createuser , name='createuser' ),
     path('signin/', views.signin , name='signin' ),
     path('signout/', views.signout , name='signout' ),
+    path('coursesingle/<unqid>/<temail>', views.coursesingle , name='coursesingle' ),
 
 
 

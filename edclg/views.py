@@ -130,14 +130,16 @@ def pdf(request):
 
 
 
-
 def updone(request):
     g = request.POST['uid']
+    temail = request.POST['teacheremail']
     geto = Courseupdate.objects.get(unqid=g)
     if request.method == 'POST':
         form = pdfupform(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
+            instance.unqid = g
+            instance.teacheremail = temail
             instance.unid = geto#changes here
             instance.save()
             context={
@@ -149,7 +151,6 @@ def updone(request):
         return render(request, 'upload.html', {
         'form': form
     })
-
 
 
 
@@ -181,3 +182,24 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('clghome')
+
+
+
+
+def coursesingle(request,unqid,temail):
+    
+
+    material = pdfstore.objects.filter(unqid=unqid)
+    teacher = User.objects.filter(username=temail)
+    context = {
+        'material': material,
+        'teacher': teacher,
+    }
+    return render(request,'course-single.html',context)
+
+
+
+
+
+
+
