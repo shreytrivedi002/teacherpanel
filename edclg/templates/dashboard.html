@@ -19,7 +19,19 @@
         color: black;
         margin-top: 2em;
     }
+    
+    #goku:hover {
+        background-color: cornflowerblue;
+        color: cornsilk;
+        border-right: darkblue;
+        border-radius: 25px;
+        transition-delay: 0.20s;
+        transition-duration: 0.20s;
+    }
 </style>
+
+
+
 <section class="wer">
     <h2> {{ success }} </h2>
 </section>
@@ -30,31 +42,241 @@
                 <div class="sidebar">
                     <!-- Dashboard Links -->
                     <div class="widget dashboard-links">
+                        <!-- Edit Profile Welcome Text -->
+                        <div class="widget welcome-message">
+                            <h2>Dashboard</h2>
+                        </div>
                         <ul>
                             <li><a class="my-1 d-inline-block" href="{% url 'up' %}">Course Update</a></li>
-                            <li><a class="my-1 d-inline-block" href="">Profile </a></li>
-                            <li><a class="my-1 d-inline-block" href="">My Materials <span>(3)</span></a></li>
-                            <!-- <li><a class="my-1 d-inline-block" href="">Recommended</a></li> -->
+                            <li><a class="my-1 d-inline-block" href="{% url 'profile' %}">Profile </a></li>
+                            <li><a class="my-1 d-inline-block" href="{% url 'up' %}">My Materials </a></li>
+                            <li><a class="my-1 d-inline-block" href="{% url 'up' %}"> Attendence </a></li>
+                            <li><a class="my-1 d-inline-block" href="{% url 'signout' %}">Sign out</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-md-10 offset-md-1 col-lg-9 offset-lg-0">
-                <!-- Edit Profile Welcome Text -->
-                <div class="widget welcome-message">
-                    <h2>Dashboard</h2>
-                </div>
                 <!-- Edit Personal Info -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6">
+                    <div>
                         <div class="widget personal-info">
 
+                            <div class="row">
+                                <div>
+                                    {% if user.userpermission.teachercheck %}
+                                    <div style="float: right; ">
+                                        <form action="{% url 'att' %}" method="POST">{% csrf_token %} {% if user.userpermission.teacher_attendenceperm == True %}
+                                            <p>
+                                                Turn Off Attendence Switch
+                                                <div class="attbtn">
+                                                    <input name="tswitchon" value='True' type="checkbox" checked data-toggle="toggle" data-on="Taking Attendence" data-off="Not Taking Attendence" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </p>
+                                            {% else %}
+                                            <p>
+                                                Turn On Attendence Switch
+                                                <div class="attbtn">
+                                                    <input name="tswitchoff" type="checkbox" data-toggle="toggle" data-on="Taking Attendence" data-off="Not Taking Attendence" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </p>
+                                            {% endif %}
+                                            <button class="btn btn-transparent" id="goku">Change</button>
+                                        </form>
+
+                                    </div>
+
+
+
+                                    <div class="container">
+                                        <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
+                                            <!-- Recently Favorited -->
+                                            <div class="widget dashboard-container my-adslist">
+                                                <h3 class="widget-header">My Uploads</h3>
+                                                <table class="table table-responsive product-dashboard-table">
+                                                    {% for fil in files %}
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th>Image</th> -->
+                                                            <th>Title</th>
+                                                            <!-- <th class="text-center">Category</th> -->
+                                                            <th class="text-center">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+
+                                                            <!-- <td class="product-thumb">
+                                                                <img width="80px" height="auto" src="images/products/products-1.jpg" alt="image description"></td> -->
+                                                            <td class="product-details">
+                                                                <h3 class="title">{{ fil.unid.title }}</h3>
+                                                                <span class="add-id"><strong>Ad ID:</strong>{{ fil.unqid }}</span>
+                                                                <span><strong>Posted on: </strong><time>{{fil.date}}</time> </span>
+                                                                <span class="status active"><strong>Status</strong>Active</span>
+                                                                <span class="Institute"><strong>Institution</strong>{{teach.institution}}</span>
+                                                            </td>
+                                                            <!-- <td class="product-category"><span class="categories">Laptops</span></td> -->
+                                                            <td class="action" data-title="Action">
+                                                                <div class="">
+                                                                    <ul class="list-inline justify-content-center">
+                                                                        <li class="list-inline-item">
+                                                                            <a data-toggle="tooltip" data-placement="top" title="view" class="view" href="coursesingle/{{fil.unqid}}/{{fil.teacheremail}}">
+                                                                                <i class="fa fa-eye"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                        <!-- <li class="list-inline-item">
+                                                                            <a class="edit" data-toggle="tooltip" data-placement="top" title="Edit" href="">
+                                                                                <i class="fa fa-pencil"></i>
+                                                                            </a>
+                                                                        </li> -->
+                                                                        <!-- <li class="list-inline-item">
+                                                                            <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="">
+                                                                                <i class="fa fa-trash"></i>
+                                                                            </a>
+                                                                        </li> -->
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    {% endfor %}
+                                                </table>
+                                                <!-- pagination -->
+                                                <div class="pagination justify-content-center">
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul class="pagination">
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#" aria-label="Previous">
+                                                                    <span aria-hidden="true">&laquo;</span>
+                                                                    <span class="sr-only">Previous</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#" aria-label="Next">
+                                                                    <span aria-hidden="true">&raquo;</span>
+                                                                    <span class="sr-only">Next</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                                <!-- pagination -->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+
+                                    <!-- ------------------------------------------------------ -->
+                                    <div class="widget dashboard-container my-adslist">
+                                        <h3 class="widget-header">My Attendence</h3>
+                                        <table class="table table-responsive product-dashboard-table">
+
+                                            <thead>
+                                                <tr>
+                                                    <!-- <th>Image</th> -->
+                                                    <th>Submitting to </th>
+                                                    <!-- <th class="text-center">Category</th> -->
+                                                    <th class="text-center">Action</th>
+                                                </tr>
+                                            </thead>
+                                            {% for fil in att %}
+                                            <tbody>
+                                                <tr>
+
+                                                    <!-- <td class="product-thumb">
+                                                        <img width="80px" height="auto" src="images/products/products-1.jpg" alt="image description"></td> -->
+                                                    <td class="product-details">
+                                                        <h3 class="title">{{ fil.temail }}</h3>
+                                                        <!-- <span class="add-id"><strong>Ad ID:</strong>{{ fil.unqid }}</span> -->
+                                                        <span><strong>Date : </strong><time>{{time}}</time> </span>
+                                                        <!-- <span class="status active"><strong>Status</strong>Active</span> -->
+                                                        <br>
+                                                        <span class="Institute"><strong>Institution: </strong>{{fil.college}}</span>
+                                                    </td>
+                                                    <!-- <td class="product-category"><span class="categories">Laptops</span></td> -->
+                                                    <td class="action" data-title="Action">
+                                                        <div class="">
+                                                            <ul class="list-inline justify-content-center">
+                                                                {% if maza %}
+                                                                <li class="list-inline-item">
+                                                                    <input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-on="Marked" data-off="Not Marked" data-offstyle="outline-danger">
+                                                                </li>
+                                                                {% if mchk.teacher_attendenceperm == False %}
+                                                                <button class="btn btn-transparent" id="goku">Change</button> {% endif %} {% else %}
+                                                                <li class="list-inline-item">
+                                                                    <input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-on="Marked" data-off="Not Marked" data-offstyle="outline-danger">
+                                                                </li>
+                                                                <button class="btn btn-transparent" id="goku">Change</button> {% endif %}
+                                                                <!-- <li class="list-inline-item">
+                                                                    <a class="edit" data-toggle="tooltip" data-placement="top" title="Edit" href="">
+                                                                        <i class="fa fa-pencil"></i>
+                                                                    </a>
+                                                                </li> -->
+                                                                <!-- <li class="list-inline-item">
+                                                                    <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </a>
+                                                                </li> -->
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            {% endfor %}
+                                        </table>
+                                        <!-- pagination -->
+                                        <div class="pagination justify-content-center">
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                            <span class="sr-only">Previous</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                            <span class="sr-only">Next</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+
+                                        <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+
+
+
+
+
+
+
+
+
+
 </section>
+
+
+
+
+
 
 {% endblock %}

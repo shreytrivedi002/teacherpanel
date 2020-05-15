@@ -4,10 +4,12 @@ from django.contrib.auth.decorators import login_required
 # from user.forms import UserRegisterForm ,contactform , reqform
 from django.views.decorators.csrf import csrf_protect
 from django.core.mail import send_mail
-from .models import Teachers ,Courseupdate,pdfstore,comments
+from .models import Teachers ,Courseupdate,pdfstore,comments,userpermission,Teachers,student_list_byteach,student_attend
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login ,logout
 from .forms import pdfupform
+from django.contrib.auth.models import User
+from time import gmtime, strftime
 import random
 import string
 
@@ -94,8 +96,41 @@ def up(request):
     return render(request, 'upload.html', context )
 
 
+
+
+
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    check = userpermission.objects.filter(usern=request.user.username)
+    studcheck = student_list_byteach.objects.filter(email=request.user.username)
+    if check:
+        mymaterial = pdfstore.objects.filter(teacheremail=request.user.username)
+        teacher = Teachers.objects.get(email=request.user.username)
+        context={
+            'tech':teacher,
+            'files':mymaterial
+        }
+        return render(request, 'dashboard.html',context)
+
+    elif studcheck:
+        showtime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+        filters = student_attend.objects.filter(semail=request.user.username)
+        r = student_list_byteach.objects.filter(email=request.user.username).values('temail')
+        temail = r[0]['temail']
+
+
+
+        megacheck = userpermission.objects.get(usern=temail)
+        context={
+            'mchk':megacheck,
+            'att':studcheck,
+            'time':showtime,
+            'std':studcheck,
+            'maza':filters
+        }
+        return render(request, 'dashboard.html',context)
+    else:
+        return render(request, 'dashboard.html')
+
 
 
 
@@ -216,3 +251,20 @@ def commentsave(request):
     if uid != '' and name != '' and email != '' and message !='':
         instance.save()
         return redirect('clghome')
+
+
+
+
+def att(request):
+    if request.method == 'POST':
+        instance = userpermission.objects.get(usern=request.user.username)
+        if request.user.userpermission.teacher_attendenceperm == True:
+            instance.teacher_attendenceperm = False
+            instance.save(update_fields=['teacher_attendenceperm'])
+            return redirect('dashboard')
+        else:
+            instance.teacher_attendenceperm = True
+            instance.save(update_fields=['teacher_attendenceperm'])
+            return redirect('dashboard')
+    else:
+        return render(request,'clghome.html',{'invalid':"Some UnExprected Error Occured!!! If Problem Continues Contact Admin"})
