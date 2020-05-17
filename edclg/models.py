@@ -72,10 +72,12 @@ class student_list_byteach(models.Model):
 
 
 class student_attend(models.Model):
-    semail = models.EmailField(max_length=254)
-    temail = models.EmailField(max_length=254)
-    models.DateTimeField(auto_now_add=True)
+    semail = models.EmailField(max_length=254,blank=True)
+    temail = models.EmailField(max_length=254,blank=True)
+    date = models.DateField(auto_now_add=True)
     present = models.BooleanField(default=False)
+    # usern = models.ForeignKey(User,on_delete=models.CASCADE)
+    # ur = models.CharField(max_length=15)
     def __str__(self):
         return self.semail
      

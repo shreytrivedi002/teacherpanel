@@ -1,0 +1,62 @@
+{% extends 'cbase.html' %} {% block ad %} {% load static %}
+
+<!-- Edit Personal Info -->
+<!-- teacher view -->
+<div class="row">
+    <div class="container">
+        {% if user.userpermission.teachercheck %}
+        <h2 class="mt-5 mb-5">
+            Attendence Sheet
+        </h2>
+        <div class="widget personal-info">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Student Email (Present Students)</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in att %}
+                    <tr>
+                        <th scope="row"><i class="fa fa-arrow-right"></i></th>
+                        <td>{{a.semail}}</td>
+                        <td>{{a.date}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>"{{ user.username }}" is Currently Viewing this Table <br> Current Time is <span>{{time}}</span></p>
+        </div>
+        {% else %}
+        <!-- student view -->
+        <h2 class="mt-5 mb-5">
+            Presence Sheet
+        </h2>
+        <div class="widget personal-info">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Teacher Email</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in att %}
+                    <tr>
+                        <th scope="row"><i class="fa fa-arrow-right"></i></th>
+                        <td>{{a.temail}}</td>
+                        <td>{{a.date}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>"{{ user.username }}" is Currently Viewing this Table <br> Current Time is <span>{{time}}</span></p>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

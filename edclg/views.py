@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login ,logout
 from .forms import pdfupform
 from django.contrib.auth.models import User
 from time import gmtime, strftime
+from datetime import datetime
 import random
 import string
 
@@ -96,9 +97,6 @@ def up(request):
     return render(request, 'upload.html', context )
 
 
-
-
-
 def dashboard(request):
     check = userpermission.objects.filter(usern=request.user.username)
     studcheck = student_list_byteach.objects.filter(email=request.user.username)
@@ -112,16 +110,19 @@ def dashboard(request):
         return render(request, 'dashboard.html',context)
 
     elif studcheck:
-        showtime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+        showtime = strftime("%Y-%m-%d", gmtime())
         filters = student_attend.objects.filter(semail=request.user.username)
         r = student_list_byteach.objects.filter(email=request.user.username).values('temail')
-        temail = r[0]['temail']
-
-
-
-        megacheck = userpermission.objects.get(usern=temail)
+        p=[]
+        p.append(False)
+        for i in r:
+            checking=userpermission.objects.get(usern=i['temail'])
+            if checking.teacher_attendenceperm == True:
+                p.append(True)
+            else:
+                p.append(False)
         context={
-            'mchk':megacheck,
+        'perm':p,
             'att':studcheck,
             'time':showtime,
             'std':studcheck,
@@ -130,7 +131,6 @@ def dashboard(request):
         return render(request, 'dashboard.html',context)
     else:
         return render(request, 'dashboard.html')
-
 
 
 
@@ -162,6 +162,7 @@ def pdf(request):
         return render(request, 'upload.html', {
             'form': form
         })
+
 
 
 
@@ -198,6 +199,12 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            studcheck = student_list_byteach.objects.filter(email=request.user.username)
+            # if studcheck:
+            #     from datetime import datetime
+            #     now = datetime.now()
+            #     todaysentry = student_attend(date=now)
+            #     todaysentry.save()
             return redirect('clghome')
         else:
             context={
@@ -217,9 +224,6 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('clghome')
-
-
-
 
 def coursesingle(request,unqid,temail):
     comment = comments.objects.filter(unqid=unqid)
@@ -268,3 +272,47 @@ def att(request):
             return redirect('dashboard')
     else:
         return render(request,'clghome.html',{'invalid':"Some UnExprected Error Occured!!! If Problem Continues Contact Admin"})
+
+
+
+
+
+
+def st_attendence(request,temail,username):
+    create = student_attend(temail=temail,semail=username,present=True)
+    create.save()
+    return redirect('dashboard')
+
+
+
+
+def profileupdate(request):
+    fname = request.POST['fname']
+    lname = request.POST['lname']
+    instance = User.objects.get(username=request.user.username)
+    instance.first_name = fname
+    instance.last_name = lname
+    instance.save()
+    return redirect('profile')
+
+
+
+
+
+def attendencepage(request):
+    if not request.user.userpermission.teachercheck:
+        attendence = student_attend.objects.filter(semail=request.user.username)
+        context={
+            'att':attendence,
+            'time':str(datetime.now())
+        }
+        return render(request,'attendencepage.html',context)
+    else:
+        attendence = student_attend.objects.filter(temail=request.user.username)
+        context={
+            'att':attendence,
+            'time':str(datetime.now())
+        }
+        return render(request,'attendencepage.html',context)
+
+

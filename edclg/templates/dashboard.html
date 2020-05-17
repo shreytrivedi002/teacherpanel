@@ -1,4 +1,4 @@
-{% extends 'cbase.html' %} {% block ad %} {% load static %}
+ {% extends 'cbase.html' %} {% block ad %} {% load static %} {%load filterlist%}
 <br>
 
 <style>
@@ -38,7 +38,7 @@
 <section class="user-profile section mt-5">
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-10 offset-md-1 col-lg-3 offset-lg-0">
+            <div class="col-md-10 offset-md-1 col-sm-12 col-lg-3 offset-lg-0">
                 <div class="sidebar">
                     <!-- Dashboard Links -->
                     <div class="widget dashboard-links">
@@ -47,16 +47,20 @@
                             <h2>Dashboard</h2>
                         </div>
                         <ul>
-                            <li><a class="my-1 d-inline-block" href="{% url 'up' %}">Course Update</a></li>
+
                             <li><a class="my-1 d-inline-block" href="{% url 'profile' %}">Profile </a></li>
-                            <li><a class="my-1 d-inline-block" href="{% url 'up' %}">My Materials </a></li>
-                            <li><a class="my-1 d-inline-block" href="{% url 'up' %}"> Attendence </a></li>
+                            {% if user.userpermission.teachercheck %}
+                            <li><a class="my-1 d-inline-block" href="{% url 'up' %}">Course Update</a></li>
+                            <li><a class="my-1 d-inline-block" href="{% url 'attendencepage' %}">Attendence Sheet</a></li>
+                            {% else %}
+                            <li><a class="my-1 d-inline-block" href="{% url 'attendencepage' %}">View Attendence </a></li>
+                            {% endif %}
                             <li><a class="my-1 d-inline-block" href="{% url 'signout' %}">Sign out</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="col-md-10 offset-md-1 col-lg-9 offset-lg-0">
+            <div class="col-md-10 offset-md-1 col-lg-9 col-sm-12 offset-lg-0">
                 <!-- Edit Personal Info -->
                 <div class="row">
                     <div>
@@ -89,7 +93,7 @@
 
 
                                     <div class="container">
-                                        <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
+                                        <div class="col-md-10 offset-md-1 col-sm-12 col-lg-8 offset-lg-0">
                                             <!-- Recently Favorited -->
                                             <div class="widget dashboard-container my-adslist">
                                                 <h3 class="widget-header">My Uploads</h3>
@@ -142,7 +146,7 @@
                                                     {% endfor %}
                                                 </table>
                                                 <!-- pagination -->
-                                                <div class="pagination justify-content-center">
+                                                <!-- <div class="pagination justify-content-center">
                                                     <nav aria-label="Page navigation example">
                                                         <ul class="pagination">
                                                             <li class="page-item">
@@ -162,8 +166,7 @@
                                                             </li>
                                                         </ul>
                                                     </nav>
-                                                </div>
-                                                <!-- pagination -->
+                                                </div> -->
 
                                             </div>
                                         </div>
@@ -172,15 +175,15 @@
 
 
                                     <!-- ------------------------------------------------------ -->
-                                    <div class="widget dashboard-container my-adslist">
+                                    {% if not user.userpermission.teachercheck %}
+
+                                    <div class="widget container my-adslist">
                                         <h3 class="widget-header">My Attendence</h3>
-                                        <table class="table table-responsive product-dashboard-table">
+                                        <table class="table table-responsive dashboard-table">
 
                                             <thead>
                                                 <tr>
-                                                    <!-- <th>Image</th> -->
                                                     <th>Submitting to </th>
-                                                    <!-- <th class="text-center">Category</th> -->
                                                     <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
@@ -192,36 +195,28 @@
                                                         <img width="80px" height="auto" src="images/products/products-1.jpg" alt="image description"></td> -->
                                                     <td class="product-details">
                                                         <h3 class="title">{{ fil.temail }}</h3>
-                                                        <!-- <span class="add-id"><strong>Ad ID:</strong>{{ fil.unqid }}</span> -->
                                                         <span><strong>Date : </strong><time>{{time}}</time> </span>
-                                                        <!-- <span class="status active"><strong>Status</strong>Active</span> -->
                                                         <br>
                                                         <span class="Institute"><strong>Institution: </strong>{{fil.college}}</span>
                                                     </td>
-                                                    <!-- <td class="product-category"><span class="categories">Laptops</span></td> -->
                                                     <td class="action" data-title="Action">
                                                         <div class="">
                                                             <ul class="list-inline justify-content-center">
-                                                                {% if maza %}
+                                                                {% button_check fil.temail user.username as check %} {% if check == False or check == 'lol' or None %}
+
                                                                 <li class="list-inline-item">
-                                                                    <input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-on="Marked" data-off="Not Marked" data-offstyle="outline-danger">
+                                                                    <input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-on="Marked" data-off="Mark" data-offstyle="outline-danger">
                                                                 </li>
-                                                                {% if mchk.teacher_attendenceperm == False %}
-                                                                <button class="btn btn-transparent" id="goku">Change</button> {% endif %} {% else %}
+                                                                {% if perm|filterlist:forloop.counter %}
+                                                                <a href="st_attendence/{{fil.temail}}/{{user.username}}"><button class="btn btn-transparent" id="goku">Go <i class="fa fa-arrow-right"></i></button></a> <br> {% endif %}
+                                                                <p>? <span style="color: blueviolet;">PUSH </span> button appears when Teacher Allows the The Attendence</p>
+                                                                <!-- else -->
+                                                                {% else %}
                                                                 <li class="list-inline-item">
-                                                                    <input type="checkbox" data-toggle="toggle" data-onstyle="outline-success" data-on="Marked" data-off="Not Marked" data-offstyle="outline-danger">
+                                                                    <input type="checkbox" checked data-toggle="toggle" data-onstyle="outline-success" data-on="Marked" data-off="Mark" data-offstyle="outline-danger">
                                                                 </li>
-                                                                <button class="btn btn-transparent" id="goku">Change</button> {% endif %}
-                                                                <!-- <li class="list-inline-item">
-                                                                    <a class="edit" data-toggle="tooltip" data-placement="top" title="Edit" href="">
-                                                                        <i class="fa fa-pencil"></i>
-                                                                    </a>
-                                                                </li> -->
-                                                                <!-- <li class="list-inline-item">
-                                                                    <a class="delete" data-toggle="tooltip" data-placement="top" title="Delete" href="">
-                                                                        <i class="fa fa-trash"></i>
-                                                                    </a>
-                                                                </li> -->
+                                                                <p>? <span style="color: blueviolet;">PUSH </span>button appears when Teacher Allows the The Attendence</p>{% endif %}
+
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -230,7 +225,8 @@
                                             {% endfor %}
                                         </table>
                                         <!-- pagination -->
-                                        <div class="pagination justify-content-center">
+                                        <!-- to be used in later steps -->
+                                        <!-- <div class="pagination justify-content-center">
                                             <nav aria-label="Page navigation example">
                                                 <ul class="pagination">
                                                     <li class="page-item">
@@ -250,17 +246,20 @@
                                                     </li>
                                                 </ul>
                                             </nav>
-                                        </div>
+                                        </div> -->
 
                                         <!-- ------------------------------------------------------------------------------------------------------------------- -->
 
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
 
 

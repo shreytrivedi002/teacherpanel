@@ -133,7 +133,7 @@ LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
 
-
+# SESSION_COOKIE_AGE = True
 
 
 

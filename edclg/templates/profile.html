@@ -1,4 +1,4 @@
-{% extends 'cbase.html' %} {% block ad %} {% load static %}
+{% extends 'cbase.html' %} {% block ad %} {% load static %}{% load filterlist %}
 <br>
 <style>
     .widget.user .image img {
@@ -25,17 +25,31 @@
                             <img src="{% static 'images/person_1.jpg' %} " alt="" class="">
                         </div>
                         <!-- User Name -->
-                        <h5 class="text-center">Samanta Doe</h5>
+                        <h5 class="text-center">{{user.first_name}}{{user.last_name}}</h5>
                     </div>
-                    <!-- Dashboard Links -->
-                    <!-- <div class="widget dashboard-links">
-                        <ul>
-                            <li><a class="my-1 d-inline-block" href="">Savings Dashboard</a></li>
-                            <li><a class="my-1 d-inline-block" href="">Saved Offer <span>(5)</span></a></li>
-                            <li><a class="my-1 d-inline-block" href="">Favourite Stores <span>(3)</span></a></li>
-                            <li><a class="my-1 d-inline-block" href="">Recommended</a></li>
+                    <div class="widget ">
+                        <ul style="list-style: none;">
+                            <li>
+                                <h4>Account Details</h4>
+                            </li>
+                            <li>
+                                <h5>Email: </h5>
+                                <p> {{user.username}} </p>
+                            </li>
+                            <li class="nav-link">
+                                <a href="{% url 'signout' %}">Sign out</a>
+                            </li>
+                            {% if not user.userpermission.teachercheck %} {% studentdetail user.username as p %}
+                            <li>
+                                <h5>Teachers Registered with : </h5>
+                                {% for x in p %}
+                                <span> {{x.temail|truncatechars:20}} </span><br> {% endfor %}
+                            </li>
+
+                            {% endif %}
+
                         </ul>
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <div class="col-md-10 offset-md-1 col-lg-9 offset-lg-0">
@@ -49,44 +63,24 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="widget personal-info">
                             <h3 class="widget-header user">Edit Personal Information</h3>
-                            <form action="#">
+                            <form action="{% url 'profileupdate' %}" method="POST">{% csrf_token %}
                                 <!-- First Name -->
                                 <div class="form-group">
                                     <label for="first-name">First Name</label>
-                                    <input type="text" class="form-control" id="first-name">
+                                    <input type="text" name="fname" placeholder="{{ user.first_name }}" class="form-control" id="first-name">
                                 </div>
                                 <!-- Last Name -->
                                 <div class="form-group">
                                     <label for="last-name">Last Name</label>
-                                    <input type="text" class="form-control" id="last-name">
+                                    <input type="text" name="lname" placeholder="{{ user.last_name }}" class="form-control" id="last-name">
                                 </div>
-                                <!-- File chooser -->
-                                <!-- <div class="form-group choose-file d-inline-flex">
-                                    <i class="fa fa-user text-center px-3"></i>
-                                    <input type="file" class="form-control-file mt-2 pt-1" id="input-file">
-                                </div> -->
-                                <!-- Comunity Name -->
-                                <div class="form-group">
-                                    <label for="comunity-name">College</label><br>
-                                    <label>college name</label>
-
-                                    <!-- <input type="text" class="form-control" id="comunity-name"> -->
-
-                                </div>
-                                <!-- Checkbox -->
-                                <!-- <div class="form-check">
-                                    <label class="form-check-label" for="hide-profile">
-									<input class="form-check-input mt-1" type="checkbox" value="" id="hide-profile">
-									Hide Profile from Public/Comunity
-								  </label>
-                                </div> -->
-                                <!-- Zip Code -->
                                 <!-- <div class="form-group">
-                                    <label for="zip-code">Zip Code</label>
-                                    <input type="text" class="form-control" id="zip-code">
+                                    <label for="comunity-name">College</label><br>
+                                    <label></label>
+
                                 </div> -->
                                 <!-- Submit button -->
-                                <button class="btn btn-transparent" id="mg">Save My Changes</button>
+                                <button class="btn btn-transparent" type="submit" id="mg">Save My Changes</button>
                             </form>
                         </div>
                     </div>
@@ -94,7 +88,7 @@
                         <!-- Change Password -->
                         <div class="widget change-password">
                             <h3 class="widget-header user">Edit Password</h3>
-                            <label style="color: blue;">Contact Admin to request PASSWORD Change</label>
+                            <label style="color: blue;">Contact Admin to request PASSWORD Change or Contact your Teacher</label>
 
                             <form action="#">
                                 <!-- Current Password -->

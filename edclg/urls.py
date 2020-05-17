@@ -20,6 +20,14 @@ urlpatterns = [
     path('dashboard/coursesingle/<unqid>/<temail>', views.coursesingle , name='coursesingle' ),
     path('comment/', views.commentsave , name='commentsave' ),
     path('att/', views.att , name='att' ),
+    path('dashboard/st_attendence/<temail>/<username>', views.st_attendence , name='st_attendence' ),
+        # not used
+    path('attpage/', views.attendencepage , name='attendencepage' ),
+    path('profileupdate/', views.profileupdate , name='profileupdate' ),
+
+
+
+
 
 
 
