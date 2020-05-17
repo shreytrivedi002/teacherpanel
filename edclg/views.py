@@ -60,9 +60,10 @@ def rand():
 def clghome(request):
     qid = Courseupdate.objects.only('unqid')
     last_ten = pdfstore.objects.order_by('-id')[:10][::-1]#changed from course update to pdfstore
+    teacher = Teachers.objects.all()
     context ={
         # 'display':Courseupdate.objects.all()
-        # 'docdisplay'
+        'teacher':teacher,
         'display' : last_ten
     }
     return render(request,'clghome.html',context)
@@ -300,14 +301,15 @@ def profileupdate(request):
 
 
 def attendencepage(request):
-    if not request.user.userpermission.teachercheck:
-        attendence = student_attend.objects.filter(semail=request.user.username)
-        context={
-            'att':attendence,
-            'time':str(datetime.now())
-        }
-        return render(request,'attendencepage.html',context)
-    else:
+    try: 
+        if request.user.userpermission.teachercheck:
+            attendence = student_attend.objects.filter(semail=request.user.username)
+            context={
+                'att':attendence,
+                'time':str(datetime.now())
+            }
+            return render(request,'attendencepage.html',context)
+    except:
         attendence = student_attend.objects.filter(temail=request.user.username)
         context={
             'att':attendence,

@@ -1,5 +1,5 @@
 from django import template
-from edclg.models import student_attend,student_list_byteach
+from edclg.models import student_attend,student_list_byteach,pdfstore
 from time import gmtime, strftime
 from datetime import date
 
@@ -43,3 +43,17 @@ def studentdetail(username):
     ins = student_list_byteach.objects.filter(email=username)
     return ins
     
+
+
+
+
+@register.simple_tag
+def no_of_studentsbyteacher(temail):
+    no = student_list_byteach.objects.filter(temail=temail).count()
+    return no
+    
+
+@register.simple_tag
+def no_of_material(temail):
+    coun = pdfstore.objects.filter(teacheremail=temail).count()
+    return coun
