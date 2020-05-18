@@ -47,13 +47,12 @@ class comments(models.Model):
 
 
 class userpermission(models.Model):
-    def __str__(self):
-        return self.user.username
-    
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     teachercheck = models.BooleanField(default=False)
     teacher_attendenceperm = models.BooleanField(default=False) 
     usern = models.CharField(max_length=100,blank=True)
+    def __str__(self):
+        return self.user.username
 
 
 
@@ -76,8 +75,6 @@ class student_attend(models.Model):
     temail = models.EmailField(max_length=254,blank=True)
     date = models.DateField(auto_now_add=True)
     present = models.BooleanField(default=False)
-    # usern = models.ForeignKey(User,on_delete=models.CASCADE)
-    # ur = models.CharField(max_length=15)
     def __str__(self):
         return self.semail
      

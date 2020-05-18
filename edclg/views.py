@@ -301,16 +301,21 @@ def profileupdate(request):
 
 
 def attendencepage(request):
-    try: 
-        if request.user.userpermission.teachercheck:
-            attendence = student_attend.objects.filter(semail=request.user.username)
-            context={
-                'att':attendence,
-                'time':str(datetime.now())
-            }
-            return render(request,'attendencepage.html',context)
-    except:
+    lo = userpermission.objects.filter(usern=request.user.username)
+    if lo:
         attendence = student_attend.objects.filter(temail=request.user.username)
+        context={
+            'att':attendence,
+            'time':str(datetime.now())
+        }
+        return render(request,'attendencepage.html',context)
+
+
+
+    else:
+        
+        
+        attendence = student_attend.objects.filter(semail=request.user.username)
         context={
             'att':attendence,
             'time':str(datetime.now())

@@ -4,10 +4,11 @@
 <!-- teacher view -->
 <div class="row">
     <div class="container">
-        {% if not user.userpermission.teachercheck %}
+        {% if user.userpermission.teachercheck %}
         <h2 class="mt-5 mb-5">
             Attendence Sheet
         </h2>
+
         <div class="widget personal-info">
             <table class="table">
                 <thead class="thead-dark">
@@ -24,6 +25,7 @@
                         <td>{{a.semail}}</td>
                         <td>{{a.date}}</td>
                     </tr>
+
                     {% endfor %}
                 </tbody>
             </table>
