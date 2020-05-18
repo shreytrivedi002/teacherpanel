@@ -215,24 +215,24 @@
                             <figure class="m-0">
                                 <a href="coursesingle/{{con.unqid}}/{{con.teacheremail}}">
                                     <!-- <iframe src="{{ con.file.url }}" alt="Image" class="img-fluid"></iframe> -->
-                                    <embed src="{{ MEDIA_URL }}{{ con.file.url }}" alt="Image" class="img-fluid"></embed>
+                                    <embed src="{{ con.file.url }}" alt="Image" width="100%" class="img-fluid"></embed>
                                     <!-- <embed src=""> -->
                                 </a>
                             </figure>
                             <a href="coursesingle/{{con.unqid}}/{{con.teacheremail}}">
 
                                 <div class="course-inner-text py-4 px-4">
-                                    <h3>{{ con.file.url }}</h3>
+                                    <!-- <h3>{{ con.file.url }}</h3> -->
                                     <span class="course-price">edf</span>
-                                    <h3><a href="#">{{ con.unid.subject }}</a></h3>
+                                    <!-- <h3><a href="coursesingle/{{con.unqid}}/{{con.teacheremail}}">{{ con.unid.subject }}</a></h3> -->
                                     <div class="meta"><span class="icon-clock-o"></span></div>
-                                    <h3><a href="#">{{ con.unid.subject }}</a></h3>
+                                    <h3><a href="coursesingle/{{con.unqid}}/{{con.teacheremail}}">{{ con.unid.subject }}</a></h3>
                                     <p>{{ con.unid.title }} </p>
                                     <!-- <p>{{con.file}}</p> -->
                                 </div>
                                 <div class="d-flex border-top stats">
                                     <div class="py-3 px-4"><span class="icon-users"></span> 203 students</div>
-                                    <!-- <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div> -->
+                                    <div class="py-3 px-4 w-25 ml-auto border-left"><a href="coursesingle/{{con.unqid}}/{{con.teacheremail}}"><span class="fa fa-arrow-right"></span></a></div>
                                 </div>
                             </a>
                         </div>
